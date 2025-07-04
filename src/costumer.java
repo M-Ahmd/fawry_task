@@ -1,8 +1,8 @@
 import java.util.Map;
 
 public class costumer {
-    cart items_cart;
-    int costumer_balance;
+    private cart items_cart;
+    private int costumer_balance;
 
     /**
      * constractor for constract the costumer
@@ -44,8 +44,10 @@ public class costumer {
             for (Map.Entry<products, Integer> entry : items_cart.get_items().entrySet()) {
                 products product = entry.getKey();
                 int quantity = entry.getValue();
-                total_weight += product.get_weight();
-                print_shipment_notice(product, quantity);
+                if (product.isShippable()) {
+                    print_shipment_notice(product, quantity);
+                    total_weight += product.get_weight() * quantity;
+                }
             }
             System.out.println("Total package weight " + total_weight);
             
@@ -81,7 +83,7 @@ public class costumer {
     {
         
         System.out.println(
-            quantity + "x " + product.name + "\t"
+            quantity + "x " + product.get_name() + "\t"
             + product.get_weight() * quantity
         );
     }
@@ -95,7 +97,7 @@ public class costumer {
     {
         
         System.out.println(
-            quantity + "x " + product.name + "\t"
+            quantity + "x " + product.get_name() + "\t"
             + product.get_price() * quantity
         );
     }

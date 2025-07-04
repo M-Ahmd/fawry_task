@@ -1,13 +1,13 @@
 import java.time.LocalDate;
 
 public class products {
-    String name;
-    int price;
-    int quantity;
-    boolean will_it_expire;
-    LocalDate time_expire;
-    boolean is_shipping;
-    double weight;
+    private String name;
+    private int price;
+    private int quantity;
+    private boolean will_it_expire;
+    private LocalDate time_expire;
+    private boolean is_shipping;
+    private double weight;
 
     /** 
      * Constructor - to construct the complete product object
@@ -102,5 +102,25 @@ public class products {
     public double get_weight()
     {
         return weight;
+    }
+    /**
+     * Get the state of expire
+     */
+    public boolean get_will_it_expire()
+    {
+        return will_it_expire;
+    }
+    /**
+     * Get the state of shipping
+     */
+    public boolean isShippable() {
+        return is_shipping;
+    }
+    /**
+     * isExpired - tell us is it expired or not
+     * return: true or false
+     */
+    public boolean isExpired() {
+        return will_it_expire && time_expire != null && LocalDate.now().isAfter(time_expire);
     }
 }

@@ -2,15 +2,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class cart {
-    Map<products, Integer> items;
-    int total_price;
+    private Map<products, Integer> items;
     /**
      * constructor for init the cart
      */
     public cart()
     {
         items = new HashMap<>();
-        total_price = 0;
     }
     /**
      * add_item - is a function to add products to cart
@@ -24,20 +22,22 @@ public class cart {
         }
         else if(item.get_quantity() < quantity) {
             throw new IllegalArgumentException("Not enough quantity available.");
-        } else if(item.will_it_expire && item.time_expire != null && java.time.LocalDate.now().isAfter(item.time_expire)) {
-            throw new IllegalArgumentException("Cannot add expired product: " + item.get_name() + ". Expired on: " + item.time_expire);
+        } else if(item.isExpired()) {
+            throw new IllegalArgumentException("Cannot add expired product: " + item.get_name() + ". Expired on: " + item.get_time_expire());
         } else {
             items.merge(item, quantity, Integer::sum);
-            total_price += item.get_price() * quantity;
         }
     }
     /**
      * get_total_price - function to get price
      * return: get the total price
      */
-    public int get_total_price()
-    {
-        return total_price;
+    public int get_total_price() {
+        int total = 0;
+        for (Map.Entry<products, Integer> entry : items.entrySet()) {
+            total += entry.getKey().get_price() * entry.getValue();
+        }
+        return total;
     }
     /**
      * get_items - is a function to get 
