@@ -1,12 +1,12 @@
 import java.time.LocalDate;
 
-public class products implements Shippable{
+public class Products implements Shippable {
     private String name;
     private int price;
     private int quantity;
-    private boolean will_it_expire;
-    private LocalDate time_expire;
-    private boolean is_shipping;
+    private boolean willItExpire;
+    private LocalDate timeExpire;
+    private boolean isShipping;
     private double weight;
 
     /** 
@@ -14,92 +14,92 @@ public class products implements Shippable{
      * @param name Name of the product
      * @param price Price of the product
      * @param quantity Quantity of the product
-     * @param will_it_expire Whether the product will expire
-     * @param time_expire Expiration date of the product
-     * @param is_shipping Whether the product is for shipping
+     * @param willItExpire Whether the product will expire
+     * @param timeExpire Expiration date of the product
+     * @param isShipping Whether the product is for shipping
      * @param weight Weight of the product
      */
-    public products(String name, int price, int quantity, boolean will_it_expire, LocalDate time_expire, boolean is_shipping, double weight)
+    public Products(String name, int price, int quantity, boolean willItExpire, LocalDate timeExpire, boolean isShipping, double weight)
     {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
-        this.will_it_expire = will_it_expire;
-        this.time_expire = time_expire;
-        this.is_shipping = is_shipping;
+        this.willItExpire = willItExpire;
+        this.timeExpire = timeExpire;
+        this.isShipping = isShipping;
         this.weight = weight;
     }
     /* Constructor - to construct a partial product object */
-    public products(String name, int price, int quantity)
+    public Products(String name, int price, int quantity)
     {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
-        this.will_it_expire = false; // Default value
-        this.time_expire = null; // Default value
-        this.is_shipping = false; // Default value
+        this.willItExpire = false; // Default value
+        this.timeExpire = null; // Default value
+        this.isShipping = false; // Default value
         this.weight = 0.0; // Default value
     }
     /* Setter for price */
-    public void set_price(int price)
+    public void setPrice(int price)
     {
         this.price = price;
     }
     /* Setter for quantity */
-    public void set_quantity(int quantity)
+    public void setQuantity(int quantity)
     {
         this.quantity = quantity;
     }
     /* Setter for expiration state */
-    public void set_will_it_expire(boolean will_it_expire)
+    public void setWillItExpire(boolean willItExpire)
     {
-        this.will_it_expire = will_it_expire;
+        this.willItExpire = willItExpire;
     }
     /* Setter for expiration date */
-    public void set_time_expire(LocalDate time_expire)
+    public void setTimeExpire(LocalDate timeExpire)
     {
-        if(will_it_expire) {
-            this.time_expire = time_expire;
+        if(willItExpire) {
+            this.timeExpire = timeExpire;
         } else {
             throw new IllegalArgumentException("Cannot set expiration date if product does not expire.");
         }
     }
     /* Setter for shipping state */
-    public void set_is_shipping(boolean is_shipping)
+    public void setIsShipping(boolean isShipping)
     {
-        this.is_shipping = is_shipping;
+        this.isShipping = isShipping;
     }
     /* Setter for weight */
-    public void set_weight(double weight)
+    public void setWeight(double weight)
     {
-        if(is_shipping) {
+        if(isShipping) {
             this.weight = weight;
         } else {
             throw new IllegalArgumentException("Cannot set weight if product is not for shipping.");
         }
     }
     @Override
-    public String get_name()
+    public String getName()
     {
         return name;
     }
     /* Getter for price */
-    public int get_price()
+    public int getPrice()
     {
         return price;
     }
     /* Getter for quantity */
-    public int get_quantity()
+    public int getQuantity()
     {
         return quantity;
     }
     /* Getter for expiration date */
-    public LocalDate get_time_expire()
+    public LocalDate getTimeExpire()
     {
-        return time_expire;
+        return timeExpire;
     }
     @Override
-    public double get_weight()
+    public double getWeight()
     {
         if (!isShippable()) {
             throw new IllegalStateException("This product does not require shipping.");
@@ -109,21 +109,21 @@ public class products implements Shippable{
     /**
      * Get the state of expire
      */
-    public boolean get_will_it_expire()
+    public boolean getWillItExpire()
     {
-        return will_it_expire;
+        return willItExpire;
     }
     /**
      * Get the state of shipping
      */
     public boolean isShippable() {
-        return is_shipping;
+        return isShipping;
     }
     /**
      * isExpired - tell us is it expired or not
      * return: true or false
      */
     public boolean isExpired() {
-        return will_it_expire && time_expire != null && LocalDate.now().isAfter(time_expire);
+        return willItExpire && timeExpire != null && LocalDate.now().isAfter(timeExpire);
     }
 }
