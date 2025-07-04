@@ -1,6 +1,6 @@
 import java.time.LocalDate;
 
-public class products {
+public class products implements Shippable{
     private String name;
     private int price;
     private int quantity;
@@ -78,7 +78,7 @@ public class products {
             throw new IllegalArgumentException("Cannot set weight if product is not for shipping.");
         }
     }
-    /* Getter for name */
+    @Override
     public String get_name()
     {
         return name;
@@ -98,9 +98,12 @@ public class products {
     {
         return time_expire;
     }
-    /* Getter for weight */
+    @Override
     public double get_weight()
     {
+        if (!isShippable()) {
+            throw new IllegalStateException("This product does not require shipping.");
+        }
         return weight;
     }
     /**

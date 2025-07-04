@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class costumer {
@@ -35,30 +37,36 @@ public class costumer {
      */
     public void checkout()
     {
-        if(!true_process())
-            throw new IllegalStateException("Insufficient balance to complete the purchase.");
-        else
-        {
-            double total_weight = 0;
-            System.out.println("** Shipment notice ** ");
-            for (Map.Entry<products, Integer> entry : items_cart.get_items().entrySet()) {
-                products product = entry.getKey();
-                int quantity = entry.getValue();
-                if (product.isShippable()) {
-                    print_shipment_notice(product, quantity);
-                    total_weight += product.get_weight() * quantity;
+        if (!true_process()) {
+            throw new IllegalStateException("Insufficient balance or cart is invalid.");
+        }
+
+    
+        List<Shippable> itemsToShip = new ArrayList<>();
+        for (Map.Entry<products, Integer> entry : items_cart.get_items().entrySet()) {
+            products product = entry.getKey();
+            int quantity = entry.getValue();
+            if (product.isShippable()) {
+                for (int i = 0; i < quantity; i++) {
+                    itemsToShip.add(product);
                 }
             }
-            System.out.println("Total package weight " + total_weight);
-            
-            System.out.println("** Checkout receipt ** ");
-            for (Map.Entry<products, Integer> entry : items_cart.get_items().entrySet()) {
-                products product = entry.getKey();
-                int quantity = entry.getValue();
-                print_checkout_receipt(product, quantity);
-            }
-            System.out.println("Total price is " + items_cart.get_total_price());
         }
+        if (!itemsToShip.isEmpty()) {
+            ShippingService.shipItems(itemsToShip);
+        }
+
+        System.out.println("** Checkout receipt **");
+        int total = 0;
+        for (Map.Entry<products, Integer> entry : items_cart.get_items().entrySet()) {
+            products product = entry.getKey();
+            int quantity = entry.getValue();
+            int price = product.get_price() * quantity;
+            System.out.printf("%dx %s\t%d\n", quantity, product.get_name(), price);
+            total += price;
+        }
+        print_checkout_receipt(total, itemsToShip);
+        
     }
     /**
      * true_process - just checks if the
@@ -74,31 +82,20 @@ public class costumer {
         return items_cart.get_total_price() <= costumer_balance;
     }
     /**
-     * print_Shipment_notice - to print the product
-     * and the quantity just to make checkout more clean
-     * @param product is the product costumer will take
-     * @param quantity is the number of quantities
-     */
-    private void print_shipment_notice(products product, int quantity)
-    {
-        
-        System.out.println(
-            quantity + "x " + product.get_name() + "\t"
-            + product.get_weight() * quantity
-        );
-    }
-    /**
      * print_checkout_receipt - to print the product
      * and the price just to make checkout more clean
      * @param product is the product costumer will take
      * @param quantity is the number of quantities
      */
-    private void print_checkout_receipt(products product, int quantity)
+    private void print_checkout_receipt(int total, List<Shippable> itemsToShip )
     {
-        
-        System.out.println(
-            quantity + "x " + product.get_name() + "\t"
-            + product.get_price() * quantity
-        );
+        int shippingFees = itemsToShip.isEmpty() ? 0 : 30;
+        int totalPaid = total + shippingFees;
+        costumer_balance -= totalPaid;
+
+        System.out.printf("Subtotal\t%d\n", total);
+        System.out.printf("Shipping\t%d\n", shippingFees);
+        System.out.printf("Amount\t\t%d\n", totalPaid);
+        System.out.printf("Remaining Balance\t%d\n", costumer_balance);
     }
 }
