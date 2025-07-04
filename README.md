@@ -1,18 +1,47 @@
-## Getting Started
+# 🛒 E-Commerce System in Java
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+This is a simple object-oriented e-commerce system implemented in **Java**.  
+It supports product definition, cart management, expiration validation, shipping logic, and customer checkout processing with balance validation.
 
-## Folder Structure
+---
 
-The workspace contains two folders by default, where:
+## 📦 Features
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+✅ Define products with:
+- `name`, `price`, `quantity`
+- Optional expiration (`expiry date`)
+- Optional shipping flag with `weight`
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+✅ Support customers who can:
+- Add products to their cart with specific quantities
+- Checkout only if:
+  - Cart is not empty
+  - All items are in stock and not expired
+  - Customer has sufficient balance
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+✅ Checkout process includes:
+- Subtotal calculation
+- Shipping fee (flat fee if shippable items exist)
+- Final amount paid
+- Updated customer balance
+- Shipping notice with item weights and total package weight
 
-## Dependency Management
+✅ Shipping integration:
+- If a product is shippable, it is passed to a `ShippingService`
+- ShippingService accepts items implementing `Shippable` interface:
+  ```java
+  interface Shippable {
+      String getName();
+      double getWeight();
+  }
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+
+
+src/
+├── Product.java
+├── Cart.java
+├── Customer.java
+├── ShippingService.java
+├── Shippable.java
+└── Main.java
+
