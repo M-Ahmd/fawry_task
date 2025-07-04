@@ -15,5 +15,6 @@ public class Main {
         cost.addToCart(p3, 1);
         cost.checkout();
         System.out.println(p1.getQuantity());
+        System.out.println(p2.getQuantity());
     }
 }

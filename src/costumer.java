@@ -63,6 +63,7 @@ public class Costumer {
             total += price;
         }
         printCheckoutReceipt(total, itemsToShip);
+        updateTheProducts();
     }
     /**
      * trueProcess - just checks if the costumer can buy
@@ -91,5 +92,17 @@ public class Costumer {
         System.out.printf("Shipping\t%d\n", shippingFees);
         System.out.printf("Amount\t\t%d\n", totalPaid);
         System.out.printf("Remaining Balance\t%d\n", costumerBalance);
+    }
+    /**
+     * updateTheProducts - is a function for updating the
+     * products after the user buy some products
+     */
+    private void updateTheProducts()
+    {
+        for (Map.Entry<Products, Integer> entry : itemsCart.getItems().entrySet()) {
+            Products productInCart = entry.getKey();
+            int quantityPurchased = entry.getValue();
+            productInCart.setQuantity(productInCart.getQuantity() - quantityPurchased);
+        }
     }
 }
