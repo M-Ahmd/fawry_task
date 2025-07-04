@@ -9,7 +9,8 @@ public class products {
     boolean is_shipping;
     double weight;
 
-    /* Constructor - to construct the complete product object
+    /** 
+     * Constructor - to construct the complete product object
      * @param name Name of the product
      * @param price Price of the product
      * @param quantity Quantity of the product
