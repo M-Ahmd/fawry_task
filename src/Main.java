@@ -1,20 +1,25 @@
 import java.time.LocalDate;
+
 public class Main {
-    public static void main(String[] args){
-        // Create a costumer with a large balance
-        Costumer cost = new Costumer(10000000);
+    public static void main(String[] args) {
+        Product cheese = ProductFactory.createExpiringShippable("Cheese", 50, 10, LocalDate.now().plusDays(5), 0.5);
+        Product expiredMilk = ProductFactory.createExpiringShippable("Milk", 30, 5, LocalDate.now().minusDays(2), 1.0);
+        Product tv = ProductFactory.createNonExpiringShippable("TV", 3000, 2, 10.0);
+        Product ebook = ProductFactory.createDigitalProduct("EBook", 100, 100);
 
-        // Create 3 products using the full constructor
-        Products p1 = new Products("Milk", 50, 10, true, LocalDate.of(2026, 1, 1), true, 1000);
-        Products p2 = new Products("Bread", 20, 20, false, null, false, 20);
-        Products p3 = new Products("Cheese", 80, 5, true, LocalDate.of(2026, 12, 31), true, 500);
+        Customer customer = new Customer(5000);
 
-        // Add products to the costumer's cart
-        cost.addToCart(p1, 2);
-        cost.addToCart(p2, 3);
-        cost.addToCart(p3, 1);
-        cost.checkout();
-        System.out.println(p1.getQuantity());
-        System.out.println(p2.getQuantity());
+        customer.addToCart(cheese, 2);
+        customer.addToCart(tv, 1);
+        customer.addToCart(ebook, 3);
+
+        try {
+            customer.addToCart(expiredMilk, 1);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Warning: " + e.getMessage());
+        }
+
+        System.out.println("\n---- Performing Checkout ----\n");
+        customer.checkout();
     }
 }
